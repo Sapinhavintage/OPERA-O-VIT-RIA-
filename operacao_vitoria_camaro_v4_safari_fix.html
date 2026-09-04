@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Operação Vitória</title>
+<style>
+*{box-sizing:border-box}
+:root{--ink:#30251a;--paper:#ead8ad;--line:#76552f;--red:#7d2b25;--sage:#4e5c45}
+body{margin:0;min-height:100vh;background:#211b15;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background:repeating-linear-gradient(0deg,transparent 0 3px,#d8bd88 4px)}
+.wrap{max-width:760px;margin:auto;padding:14px}.paper{position:relative;overflow:hidden;min-height:680px;padding:22px;background:var(--paper);border:2px solid var(--line);box-shadow:0 14px 38px #0008,inset 0 0 60px #76552f55;transition:background .35s}.paper:after{content:"";position:absolute;inset:12px;border:1px solid #76552f55;pointer-events:none}.content{position:relative;z-index:2}
+.stamp{display:inline-block;border:3px solid var(--red);color:var(--red);padding:7px 10px;transform:rotate(-4deg);letter-spacing:2px;font:700 13px/1 monospace}h1{text-align:center;font:700 clamp(35px,8vw,64px)/1 monospace;letter-spacing:1px;margin:23px 0 4px}.sub{text-align:center;color:var(--red);font:16px monospace;letter-spacing:2px}.progress{display:flex;gap:6px;margin:22px 0}.dot{height:5px;flex:1;background:#b9a77f;transition:.3s}.dot.on{background:var(--red)}
+.step{display:none;animation:appear .38s ease}.step.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h2{text-align:center;color:var(--red);font:700 22px monospace;margin:8px 0 20px}.text{font:18px/1.7 monospace}.highlight{display:inline-block;background:var(--ink);color:var(--paper);padding:5px 9px}.quote{text-align:center;font:17px/1.65 monospace}.plan{border:1px dashed var(--line);padding:18px;background:#ddc896aa}
+.field{margin:16px 0}.field label{display:block;margin-bottom:7px;color:var(--red);font:700 14px monospace}input[type=date]{font:17px monospace;width:100%;min-height:50px;padding:12px;background:#f1e0b8;border:2px solid var(--line);color:var(--ink)}
+.date-grid{display:grid;gap:12px}.date-option{border:1px dashed var(--line);padding:12px;background:#ead6a8}.date-option span{display:block;font:700 12px monospace;color:var(--red);margin-bottom:7px}
+.options{display:grid;gap:12px}.option input{position:absolute;opacity:0}.option label{display:block;padding:17px;border:2px solid var(--line);background:#e2cea0;cursor:pointer;text-align:center;font:17px monospace;min-height:52px}.option input:checked+label{background:var(--ink);color:var(--paper);border-color:var(--red)}
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.card{padding:12px;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:monospace;min-width:0}.card b{display:block;font-size:11px;margin-bottom:8px;color:var(--red)}.card span{font-size:16px;overflow-wrap:anywhere}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}button{font:16px monospace;cursor:pointer;min-height:50px;padding:13px 18px;background:#ead8ad;color:var(--ink);border:2px solid #4d3a25;box-shadow:4px 4px var(--line);transition:all .15s ease}button:hover{transform:translate(1px,1px);box-shadow:2px 2px var(--line)}button:focus-visible{outline:3px solid var(--red);outline-offset:3px}.yes{border-color:var(--sage)}.think{border-color:var(--red)}.back-btn{background:#d2bc8a;border-color:var(--line);font-size:14px;padding:8px 14px;min-height:40px;margin-top:10px}
+.result{margin-top:18px;padding:18px;border:2px solid var(--line);background:#dcc48e;font:16px/1.65 monospace}.error{min-height:22px;text-align:center;color:var(--red);font:14px monospace;margin-top:10px}.sig{text-align:center;margin-top:28px;font:700 15px monospace}.small{text-align:center;font:11px monospace;opacity:.7;margin-top:8px}.footer{text-align:center;margin-top:18px;padding-top:12px;border-top:1px solid #76552f66;font:11px monospace;opacity:.72}
+.music{position:absolute;right:18px;top:16px;z-index:4;min-height:0;padding:8px 10px;font-size:12px;box-shadow:none}
+body.theme-telegram .paper{background:#e7dfc7}body.theme-telegram h1,body.theme-telegram h2{font-family:Georgia,serif}body.theme-location .paper{background:#dfc79b}body.theme-location .stamp{transform:rotate(3deg)}body.theme-mission .paper{background:#d8d0bd}body.theme-mission h1{letter-spacing:4px}body.theme-decision .paper{background:#e6d4a9}body.theme-decision .stamp{transform:rotate(-2deg)}body.theme-final .paper{background:#e8d5a5}
+@media(max-width:600px){.info{grid-template-columns:1fr}.text{font-size:16px}.paper{padding:18px 14px;min-height:650px}.music{position:relative;top:auto;right:auto;float:right}}
+</style>
+</head>
+<body>
+<div class="wrap"><main class="paper" id="app">
+<button class="music" id="music" type="button" aria-pressed="false">♫ trilha: OFF</button>
+<div class="content">
+<div class="stamp">CONFIDENCIAL</div><h1>OPERAÇÃO VITÓRIA</h1><div class="sub">ARQUIVO CONFIDENCIAL</div>
+<div class="progress" aria-label="Progresso"><i class="dot on"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+
+<section class="step active">
+<h2>📂 ABERTURA DO ARQUIVO</h2><div class="text">Após uma investigação minuciosa, nossa equipe identificou uma situação preocupante:
+<br><br><span class="highlight">Vitória precisa ser vista.</span><br><br>O problema?
+<br><strong>Marcar um encontro com Vitória.</strong><br><br>Os especialistas ainda estudam esse fenômeno.<br><br>Mas não se preocupe.<br><strong>Temos um plano.</strong><br><br><small>Codinome registrado no arquivo: <strong>Agente Sapinha 🐸</strong></small></div>
+<div class="actions"><button class="next" type="button">ABRIR O PLANO →</button></div>
+</section>
+
+<section class="step">
+<h2>📋 PLANO DE AÇÃO</h2>
+<div class="plan">
+<p class="quote">Para evitar o complicado processo conhecido como:</p><p class="quote"><strong>“vamos marcar qualquer dia”</strong></p>
+<p class="quote">foi elaborada uma proposta objetiva.</p>
+<div class="field"><label>📅 DISPONIBILIDADE DA AGENTE SAPINHA</label>
+<p class="quote" style="font-size:15px">Quais são <strong>até três datas</strong> em que você estaria disponível para a missão? 🐸</p>
+<div class="date-grid">
+<div class="date-option"><span>1ª OPÇÃO</span><input id="date1" type="date"></div>
+<div class="date-option"><span>2ª OPÇÃO</span><input id="date2" type="date"></div>
+<div class="date-option"><span>3ª OPÇÃO</span><input id="date3" type="date"></div>
+</div></div>
+<div class="field"><label>🕰️ PERÍODO DE DISPONIBILIDADE</label>
+<div class="options">
+<div class="option"><input id="morning" name="period" type="radio" value="Manhã"><label for="morning">☀️ MANHÃ</label></div>
+<div class="option"><input id="afternoon" name="period" type="radio" value="Tarde"><label for="afternoon">🌤️ TARDE</label></div>
+<div class="option"><input id="night" name="period" type="radio" value="Noite"><label for="night">🌙 NOITE</label></div>
+<div class="option"><input id="anytime" name="period" type="radio" value="Qualquer horário"><label for="anytime">🎲 QUALQUER HORÁRIO</label></div>
+</div>
+<div style="font:12px monospace;text-align:center;margin-top:8px;opacity:.72">O departamento entende que os horários podem estar sujeitos a ajustes operacionais. 😂</div>
+</div>
+</div>
+<div class="actions"><button class="prev back-btn" type="button">← VOLTAR</button><button class="next" type="button">ESCOLHER O LOCAL →</button></div>
+<div class="error" id="dateError"></div>
+</section>
+
+<section class="step">
+<h2>📍 LOCAL DA MISSÃO</h2><p class="quote">A Agente Sapinha deverá escolher o cenário da operação:</p>
+<div class="options">
+<div class="option"><input id="pedra" name="place" type="radio" value="Pedra Grande"><label for="pedra">⛰️ PEDRA GRANDE</label></div>
+<div class="option"><input id="fogueira" name="place" type="radio" value="Fogueira"><label for="fogueira">🔥 FOGUEIRA</label></div>
+<div class="option"><input id="aberto" name="place" type="radio" value="Plano Aberto"><label for="aberto">🎲 PLANO ABERTO<br><small>o local fica por conta da operação</small></label></div>
+</div>
+<div class="actions"><button class="prev back-btn" type="button">← VOLTAR</button><button class="next" type="button">REGISTRAR ESCOLHA →</button></div><div class="error" id="placeError"></div>
+</section>
+
+<section class="step">
+<h2>🔎 DADOS DA MISSÃO</h2><div class="info"><div class="card"><b>AGENTE</b><span>🐸 Sapinha</span></div><div class="card"><b>OBJETIVO</b><span>ver você</span></div><div class="card"><b>DURAÇÃO</b><span>algumas horinhas</span></div></div>
+<p class="text" style="text-align:center;margin-top:24px">Tudo certo. Agora falta apenas a parte mais importante da operação.</p>
+<div class="actions"><button class="prev back-btn" type="button">← VOLTAR</button><button class="next" type="button">PROSSEGUIR →</button></div>
+</section>
+
+<section class="step">
+<h2>⚠️ DECISÃO DA AGENTE SAPINHA</h2><p class="quote">O departamento solicita uma resposta oficial.</p>
+<div class="actions"><button class="yes" id="yes" type="button">🐸 MISSÃO CONFIRMADA</button><button class="think" id="think" type="button">🤔 VOU PENSAR</button></div>
+<div class="actions"><button class="prev back-btn" type="button">← VOLTAR AO RESUMO</button></div><div class="result decision" aria-live="polite"></div>
+</section>
+
+<section class="step">
+<h2>🕵️ RELATÓRIO FINAL</h2><div class="result final" aria-live="polite"></div>
+<div class="actions"><button id="whatsapp" type="button">💬 ENVIAR RELATÓRIO PELO WHATSAPP</button><button id="copy" type="button">COPIAR RELATÓRIO</button></div>
+<div class="actions"><button id="retry" class="back-btn" type="button">🔄 VOLTAR E ALTERAR DECISÃO</button></div><p class="quote" id="shareNote"></p>
+</section>
+
+<div class="sig">— AGENTE CAMARO —</div><div class="small">Documento de circulação restrita • Departamento de Operações Especiais</div>
+<div class="footer">© 2026 Tonhão Amaro — Todos os direitos reservados.</div>
+</div></main></div>
+
+<script>
+(function(){
+const root=document.getElementById('app'),steps=[...root.querySelectorAll('.step')],dots=[...root.querySelectorAll('.dot')];
+let current=0,approved=false,state={dates:[],period:'',place:''},audioCtx=null,musicOn=false,musicTimer=null,mood='normal';
+
+function playSound(type){
+ if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+ if(audioCtx.state==='suspended')audioCtx.resume();const now=audioCtx.currentTime;
+ const presets={click:['sine',450,150,.08,.12],select:['triangle',520,780,.12,.1],error:['sawtooth',180,110,.2,.15]};
+ if(presets[type]){const[t,f1,f2,d,gain]=presets[type],o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.setValueAtTime(f1,now);(type==='error'?o.frequency.linearRampToValueAtTime(f2,now+d):o.frequency.exponentialRampToValueAtTime(f2,now+d));g.gain.setValueAtTime(gain,now);g.gain.exponentialRampToValueAtTime(.001,now+d);o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+d);return}
+ const sets={happy:[523.25,659.25,783.99,1046.5],sad:[392,370,349.23,329.63]};const notes=sets[type];
+ if(notes)notes.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain(),t=now+i*(type==='happy'?.09:.18);o.type=type==='happy'?'triangle':'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(type==='happy'?.2:.15,t+.03);g.gain.exponentialRampToValueAtTime(.001,t+(type==='happy'?.35:.5));o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+(type==='happy'?.35:.5))});
+}
+function formatDate(v){if(!v)return'';const[y,m,d]=v.split('-');return d+'/'+m+'/'+y}
+function go(n){current=Math.max(0,Math.min(steps.length-1,n));steps.forEach((s,i)=>s.classList.toggle('active',i===current));dots.forEach((d,i)=>d.classList.toggle('on',i<=current));document.body.className=['','theme-telegram','theme-location','theme-mission','theme-decision','theme-final'][current]||'';root.scrollIntoView({behavior:'smooth',block:'start'})}
+function validatePlan(){
+ const d=[1,2,3].map(i=>root.querySelector('#date'+i).value).filter(Boolean),p=root.querySelector('input[name="period"]:checked'),e=root.querySelector('#dateError');e.textContent='';
+ if(!d.length||!p){e.textContent='A operação precisa de pelo menos uma data e um período de disponibilidade. 🕰️';playSound('error');return false}
+ state.dates=d;state.period=p.value;return true;
+}
+function validatePlace(){const c=root.querySelector('input[name="place"]:checked'),e=root.querySelector('#placeError');e.textContent='';if(!c){e.textContent='A Agente Sapinha precisa escolher um cenário. 🐸';playSound('error');return false}state.place=c.value;return true}
+
+root.querySelectorAll('.next').forEach((b,i)=>b.addEventListener('click',async ()=>{
+  if(i===0&&!musicOn) await startMusic();
+  else playSound('click');
+  if(i===1&&!validatePlan())return;
+  if(i===2&&!validatePlace())return;
+  go(current+1);
+}));
+root.querySelectorAll('.prev').forEach(b=>b.addEventListener('click',()=>{playSound('click');go(current-1)}));
+root.querySelector('#retry').addEventListener('click',()=>{playSound('click');mood='normal';if(musicOn)playBar();go(4)});
+root.querySelectorAll('input[type=radio]').forEach(i=>i.addEventListener('change',()=>playSound('select')));
+
+function report(status){return `🕵️ OPERAÇÃO VITÓRIA — RELATÓRIO FINAL
+
+Agente responsável: 🎯 Camaro
+Agente da missão: 🐸 Sapinha
+Status: ${status}
+
+📅 Datas disponíveis:
+${state.dates.length?state.dates.map((d,i)=>`${i+1}ª opção: ${formatDate(d)}`).join('\n'):'não informadas'}
+🕰️ Período: ${state.period||'não informado'}
+📍 Local: ${state.place||'não informado'}
+
+Objetivo: ver você.
+
+— Agente Camaro`}
+
+root.querySelector('#yes').addEventListener('click',()=>{approved=true;mood='happy';playSound('happy');if(!musicOn)startMusic();else playBar();root.querySelector('.final').innerHTML='<strong>🎉 MISSÃO CONFIRMADA</strong><br><br>Excelente decisão!<br><br>A missão foi oficialmente autorizada.<br><br><strong>Datas disponíveis:</strong><br>'+state.dates.map((d,i)=>(i+1)+'ª opção: '+formatDate(d)).join('<br>')+'<br><br><strong>Período:</strong> '+state.period+'<br><strong>Local:</strong> '+state.place+'<br><br>O restante será revelado oportunamente.<br><br>Até lá, mantenha-se disponível. 🐸';go(5)});
+root.querySelector('#think').addEventListener('click',()=>{approved=false;mood='sad';playSound('sad');if(!musicOn)startMusic();else playBar();root.querySelector('.final').innerHTML='<strong>🤔 PROTOCOLO EM ANÁLISE</strong><br><br>Sua solicitação foi encaminhada para o <strong>Departamento Responsável por Marcar Coisas que Não São Marcadas.</strong><br><br><strong>Prazo estimado: indeterminado.</strong><br><br>Agradecemos pela compreensão. 😂<br><br>— Agente Camaro';go(5)});
+root.querySelector('#whatsapp').addEventListener('click',()=>{playSound('click');window.open('https://wa.me/?text='+encodeURIComponent(report(approved?'MISSÃO APROVADA 🐸':'EM ANÁLISE 🤔')),'_blank')});
+root.querySelector('#copy').addEventListener('click',async()=>{playSound('click');const text=report(approved?'MISSÃO APROVADA 🐸':'EM ANÁLISE 🤔'),b=root.querySelector('#copy');try{await navigator.clipboard.writeText(text);b.textContent='✓ RELATÓRIO COPIADO';setTimeout(()=>b.textContent='COPIAR RELATÓRIO',1800)}catch(e){window.prompt('Copie o relatório:',text)}});
+
+function playNote(freq,start,duration,type='triangle',gain=.05){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(gain,start+.03);g.gain.exponentialRampToValueAtTime(.0001,start+duration);o.connect(g);g.connect(audioCtx.destination);o.start(start);o.stop(start+duration+.05)}
+function playBar(){clearTimeout(musicTimer);if(!musicOn||!audioCtx)return;const t=audioCtx.currentTime;
+ if(mood==='happy'){[[523.25,0],[659.25,.18],[783.99,.36],[1046.5,.54],[987.77,.72],[880,.9],[783.99,1.08],[659.25,1.26],[783.99,1.44],[1046.5,1.62],[1174.66,1.8],[1046.5,1.98],[783.99,2.16],[659.25,2.34],[523.25,2.52],[659.25,2.7],[783.99,2.88],[1046.5,3.06]].forEach(([f,x])=>playNote(f,t+x,.22,'triangle',.065));[[261.63,0],[329.63,.72],[392,1.44],[261.63,2.16],[392,2.88]].forEach(([f,x])=>playNote(f,t+x,.55,'sine',.045));musicTimer=setTimeout(playBar,3600)}
+ else if(mood==='sad'){[[440,0],[392,.75],[349.23,1.5],[329.63,2.25],[293.66,3],[329.63,3.75],[349.23,4.5],[293.66,5.25],[261.63,6],[293.66,6.75],[220,7.5]].forEach(([f,x])=>playNote(f,t+x,.68,'sine',.042));[[220,0],[174.61,2.25],[196,4.5],[146.83,6.75]].forEach(([f,x])=>playNote(f,t+x,1.5,'triangle',.024));musicTimer=setTimeout(playBar,8250)}
+ else {[[261.63,0],[329.63,.35],[392,.7],[523.25,1.05],[392,1.4],[349.23,1.75],[293.66,2.1],[329.63,2.45],[261.63,2.8],[392,3.15],[440,3.5],[523.25,3.85],[440,4.2],[392,4.55],[329.63,4.9],[293.66,5.25],[261.63,5.6],[329.63,5.95],[392,6.3]].forEach(([f,x])=>playNote(f,t+x,.28,'triangle',.035));[[130.81,0],[164.81,1.4],[196,2.8],[174.61,4.2],[130.81,5.6]].forEach(([f,x])=>playNote(f,t+x,1.2,'sine',.018));musicTimer=setTimeout(playBar,6800)}
+}
+async async function startMusic(){
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) throw new Error('Web Audio não suportado');
+    if(!audioCtx) audioCtx=new AudioCtx();
+    if(audioCtx.state!=='running') await audioCtx.resume();
+    musicOn=true;
+    playBar();
+    root.querySelector('#music').textContent='♫ trilha: ON';
+    root.querySelector('#music').setAttribute('aria-pressed','true');
+  }catch(e){
+    musicOn=false;
+    root.querySelector('#music').textContent='♫ tocar trilha';
+    root.querySelector('#music').setAttribute('aria-pressed','false');
+  }
+}
+function stopMusic(){musicOn=false;clearTimeout(musicTimer);if(audioCtx)audioCtx.suspend();root.querySelector('#music').textContent='♫ trilha: OFF';root.querySelector('#music').setAttribute('aria-pressed','false')}
+root.querySelector('#music').addEventListener('click',()=>musicOn?stopMusic():startMusic());
+})();
+</script>
+</body>
+</html>
